@@ -43,7 +43,13 @@ public class MyService extends Service implements Response.Listener, Response.Er
     public void onCreate() {
         super.onCreate();
        Log.d("Service","Kappa");
+
+        setUpRequest();
         Toast.makeText(getApplicationContext() , "creaated" , Toast.LENGTH_LONG).show();
+
+    }
+
+    private void setUpRequest() {
         mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
                 .getRequestQueue();
         String url = "http://192.168.1.126/TEST/getdata.php";
@@ -63,6 +69,8 @@ public class MyService extends Service implements Response.Listener, Response.Er
     @Override
     public void onResponse(Object response) {
 
+
+        //Json Parsing
         JSONObject job = null;
         try {
 
@@ -81,18 +89,20 @@ public class MyService extends Service implements Response.Listener, Response.Er
         }
         Log.d("response Json" , dateTime + "LOL" + message + " " + company);
 
-
+        //Show Notification
         popUpNotification();
 
 
     }
 
+
+
     private void popUpNotification() {
         Notification mNotification;
-        Intent resultIntent = new Intent(this, MainActivity.class);
+        Intent resultIntent = new Intent(this, MainVolleyActivity.class);
 
-// Because clicking the notification opens a new ("special") activity, there's
-// no need to create an artificial back stack.
+        // Because clicking the notification opens a new ("special") activity, there's
+        // no need to create an artificial back stack.
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
                         this,
