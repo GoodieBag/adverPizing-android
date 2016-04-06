@@ -66,7 +66,7 @@ public class MainVolleyActivity extends ActionBarActivity implements Response.Li
         mTextView.setText("Response is: " + response);
         try {
             mTextView.setText(mTextView.getText() + "\n\n" + ((JSONObject) response).getString
-                    ("name"));
+                    ("company"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
