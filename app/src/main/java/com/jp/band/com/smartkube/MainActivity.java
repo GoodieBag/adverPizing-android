@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            TextView o = (TextView)findViewById(R.id.textViewResponse);
-            o.setText(s);
+           // TextView o = (TextView)findViewById(R.id.textViewResponse);
+           // o.setText(s);
         }
 
         @Override

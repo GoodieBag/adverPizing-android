@@ -80,8 +80,7 @@ public class MyService extends Service implements Response.Listener, Response.Er
         }
         String dateTime = null,message = null, company = null;
         try {
-            dateTime = job.getString("dateTime");
-            message = job.getString("message");
+
             company = job.getString("company");
             companyGlobal = company;
         } catch (JSONException e) {
