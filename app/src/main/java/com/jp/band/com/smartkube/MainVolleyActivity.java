@@ -126,7 +126,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
                 item.setDescription(arJ.getString("description"));
                 item.setNew_price(arJ.getString("newprice"));
                 item.setOld_price(arJ.getString("oldprice"));
-                //item.setImage(arJ.getString("image"));
+                item.setImage(arJ.getString("url"));
                 items.add(item);
 
 //                        Log.d("ARRAY ", "" + im + "\n" + head + "\n" + desc);
