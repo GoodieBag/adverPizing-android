@@ -30,7 +30,7 @@ import java.util.List;
 public class MainVolleyActivity extends AppCompatActivity implements Response.Listener,
         Response.ErrorListener {
     public static final String REQUEST_TAG = "MainVolleyActivity";
-    private TextView mTextView;
+
     private Button mButton;
     private RequestQueue mQueue;
 
@@ -70,7 +70,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
         super.onStart();
         mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
                 .getRequestQueue();
-        String url = "http://192.168.1.126/TEST/getdata.php";
+        String url = "http://192.168.0.102/TEST/getdata.php";
         final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
@@ -89,7 +89,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        mTextView.setText(error.getMessage());
+      //  mTextView.setText(error.getMessage());
     }
 
     @Override

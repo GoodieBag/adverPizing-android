@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -26,6 +27,7 @@ public class MyService extends Service implements Response.Listener, Response.Er
     public static final String REQUEST_TAG = "MyService";
     private RequestQueue mQueue;
     String companyGlobal  =null;
+    MediaPlayer mp;
 
 
     @Override
@@ -43,7 +45,7 @@ public class MyService extends Service implements Response.Listener, Response.Er
     public void onCreate() {
         super.onCreate();
        Log.d("Service","Kappa");
-
+       mp = MediaPlayer.create(this, R.raw.tweeters);
         setUpRequest();
         Toast.makeText(getApplicationContext() , "creaated" , Toast.LENGTH_LONG).show();
 
@@ -52,7 +54,7 @@ public class MyService extends Service implements Response.Listener, Response.Er
     private void setUpRequest() {
         mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
                 .getRequestQueue();
-        String url = "http://192.168.1.126/TEST/getdata.php";
+        String url = "http://192.168.0.102/TEST/getdata.php";
         final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
@@ -97,6 +99,7 @@ public class MyService extends Service implements Response.Listener, Response.Er
 
 
     private void popUpNotification() {
+        mp.start();
         Notification mNotification;
         Intent resultIntent = new Intent(this, MainVolleyActivity.class);
 
