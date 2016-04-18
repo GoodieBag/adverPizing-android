@@ -33,7 +33,6 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
 
     private Button mButton;
     private RequestQueue mQueue;
-
     ProgressDialog loading = null;
 
     private List<Item> items;
@@ -70,7 +69,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
         super.onStart();
         mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
                 .getRequestQueue();
-        String url = "http://192.168.0.102/TEST/getdata.php";
+        String url = getString(R.string.pi_ip)+"TEST/getdata.php";
         final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
@@ -126,7 +125,8 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
                 item.setDescription(arJ.getString("description"));
                 item.setNew_price(arJ.getString("newprice"));
                 item.setOld_price(arJ.getString("oldprice"));
-                item.setImage(arJ.getString("url"));
+                item.setImage(getString(R.string.pi_ip) +"TEST/"+arJ.getString("url"));
+                Log.d("offers",getString(R.string.pi_ip) +arJ.getString("url"));
                 items.add(item);
 
 //                        Log.d("ARRAY ", "" + im + "\n" + head + "\n" + desc);

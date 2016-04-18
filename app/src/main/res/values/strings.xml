@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SmartKube</string>
+    <string name="pi_ip">http://192.168.0.102/</string>
 </resources>

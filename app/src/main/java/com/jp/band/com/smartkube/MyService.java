@@ -54,7 +54,7 @@ public class MyService extends Service implements Response.Listener, Response.Er
     private void setUpRequest() {
         mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
                 .getRequestQueue();
-        String url = "http://192.168.0.102/TEST/getdata.php";
+        String url = getString(R.string.pi_ip)+"/TEST/getdata.php";
         final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
