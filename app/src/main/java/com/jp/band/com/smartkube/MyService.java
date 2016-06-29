@@ -115,10 +115,10 @@ public class MyService extends Service implements Response.Listener, Response.Er
 
         NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification.Builder builder = new Notification.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.notify)
                 .setAutoCancel(true)
                 .setContentTitle(companyGlobal)
-                .setContentText("AMAZING SUPER MEGA OFFERS HURRY !!")
+                .setContentText("Alert! Important announcements from college!")
                 .setContentIntent(resultPendingIntent);
 
         //Get current notification

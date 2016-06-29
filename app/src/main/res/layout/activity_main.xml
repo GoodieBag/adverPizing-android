@@ -7,6 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:id="@+id/relativeL"
+    android:background="@color/cardview_dark_background"
     tools:context="com.jp.band.com.smartkube.MainActivity">
 
 
@@ -15,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
+
 
 
 </RelativeLayout>

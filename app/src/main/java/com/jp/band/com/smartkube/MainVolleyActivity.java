@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
 
     //Creating Views
     private RecyclerView recyclerView;
+    private RelativeLayout relativeL;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
 
@@ -49,9 +51,11 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //Initializing Views
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
+        relativeL = (RelativeLayout)findViewById(R.id.relativeL);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -90,6 +94,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
                 // Actions to do after 10 seconds
                 if(dataOrNot == false){
                 loading.dismiss();
+                relativeL.setBackgroundResource(R.mipmap.notavail);
                 Toast.makeText(getApplicationContext() , "No offers available at this time" , Toast.LENGTH_LONG).show();
             }}
         }, 5000);
@@ -112,6 +117,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
     public void onResponse(Object response) {
         loading.dismiss();
         dataOrNot = true;
+
        /* mTextView.setText("Response is: " + response);
         try {
             mTextView.setText(mTextView.getText() + "\n\n" + ((JSONObject) response).getString
