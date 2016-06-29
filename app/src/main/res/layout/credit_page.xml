@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/cardview_dark_background"
+    android:layout_height="match_parent">
+
+    <ayar.oktay.advancedtextview.AdvancedTextView
+        android:paddingTop="20dp"
+        android:textSize="20dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+
+        android:layout_width="match_parent"
+        android:textColor = "#ffff"
+        android:layout_height="wrap_content"
+        android:text="What Does the JssDigiBoard do ? \n
+        Its pretty much a digital notice board.
+        When you are around the college and connected to the college Wi-Fi you get notifications by the college if any!
+        \nP.S Internet is not needed ;). \nJust have your Wi-Fi on."
+        app:font="pacifico"
+        />
+
+    <ayar.oktay.advancedtextview.AdvancedTextView
+        android:paddingTop="20dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:textColor = "#ffff"
+        android:layout_height="wrap_content"
+        android:text=" THE TEAM \nRaspberry pi back-end + Android : Kai (Pavan V) \n
+        HTML + CSS : Karamba (Punith B.M) \n
+        Android : Gasi (Akash N.G)"
+        app:font="caviar_dreams_bold"
+        />
+    <ayar.oktay.advancedtextview.AdvancedTextView
+        android:paddingTop="20dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:textColor = "#ffff"
+        android:layout_height="wrap_content"
+        android:text=" This is IMMORTALITY!"
+        app:font="capture"
+        />
+
+</LinearLayout>
