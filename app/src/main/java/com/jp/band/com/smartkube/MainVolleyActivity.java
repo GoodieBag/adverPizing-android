@@ -5,6 +5,7 @@ package com.jp.band.com.smartkube;
  */
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -36,6 +38,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
     ProgressDialog loading = null;
 
     private List<Item> items;
+    private Boolean dataOrNot = false;
 
     //Creating Views
     private RecyclerView recyclerView;
@@ -65,8 +68,9 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
     @Override
     protected void onStart() {
         //Showing a progress dialog
-         loading = ProgressDialog.show(this,"Loading Data", "Please wait...",false,false);
+        loading = ProgressDialog.show(this,"Loading Data", "Please wait...",false,false);
         super.onStart();
+
         mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
                 .getRequestQueue();
         String url = getString(R.string.pi_ip)+"TEST/getdata.php";
@@ -75,7 +79,20 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
                 new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);
+        waitForSomeTimeAndCloseTheDialog();
 
+    }
+
+    private void waitForSomeTimeAndCloseTheDialog() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                // Actions to do after 10 seconds
+                if(dataOrNot == false){
+                loading.dismiss();
+                Toast.makeText(getApplicationContext() , "No offers available at this time" , Toast.LENGTH_LONG).show();
+            }}
+        }, 5000);
     }
 
     @Override
@@ -94,6 +111,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
     @Override
     public void onResponse(Object response) {
         loading.dismiss();
+        dataOrNot = true;
        /* mTextView.setText("Response is: " + response);
         try {
             mTextView.setText(mTextView.getText() + "\n\n" + ((JSONObject) response).getString
