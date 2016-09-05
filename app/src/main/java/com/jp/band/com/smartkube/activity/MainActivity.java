@@ -1,4 +1,4 @@
-package com.jp.band.com.smartkube;
+package com.jp.band.com.smartkube.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+
+import com.jp.band.com.smartkube.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;

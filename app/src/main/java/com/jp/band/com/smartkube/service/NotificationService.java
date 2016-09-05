@@ -1,4 +1,4 @@
-package com.jp.band.com.smartkube;
+package com.jp.band.com.smartkube.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -16,6 +16,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.jp.band.com.smartkube.R;
+import com.jp.band.com.smartkube.activity.MainVolleyActivity;
+import com.jp.band.com.smartkube.networks.CustomJSONObjectRequest;
+import com.jp.band.com.smartkube.networks.CustomVolleyRequestQueue;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,8 +27,9 @@ import org.json.JSONObject;
 /**
  * Created by kai on 6/4/16.
  */
-public class MyService extends Service implements Response.Listener, Response.ErrorListener  {
-    public static final String REQUEST_TAG = "MyService";
+public class NotificationService extends Service implements Response.Listener, Response.ErrorListener  {
+    public static final String REQUEST_TAG = "NotificationTag";
+    public static final String SERVICE_TAG = "Notificati0nService";
     private RequestQueue mQueue;
     String companyGlobal  =null;
     MediaPlayer mp;
@@ -33,7 +38,7 @@ public class MyService extends Service implements Response.Listener, Response.Er
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("Service", "Destroyed");
+        Log.d(SERVICE_TAG, "Destroyed");
         Toast.makeText(getApplicationContext() , "Destroyed" , Toast.LENGTH_LONG).show();
         if (mQueue != null) {
             mQueue.cancelAll(REQUEST_TAG);
@@ -44,7 +49,7 @@ public class MyService extends Service implements Response.Listener, Response.Er
     @Override
     public void onCreate() {
         super.onCreate();
-       Log.d("Service","Kappa");
+       Log.d(SERVICE_TAG,"Kappa");
        mp = MediaPlayer.create(this, R.raw.tweeters);
         setUpRequest();
         Toast.makeText(getApplicationContext() , "creaated" , Toast.LENGTH_LONG).show();
@@ -60,6 +65,11 @@ public class MyService extends Service implements Response.Listener, Response.Er
                 new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_NOT_STICKY;
     }
 
     @Nullable

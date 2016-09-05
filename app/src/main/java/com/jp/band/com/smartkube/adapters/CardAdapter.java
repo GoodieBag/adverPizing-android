@@ -1,12 +1,9 @@
-package com.jp.band.com.smartkube;
+package com.jp.band.com.smartkube.adapters;
 
 /**
  * Created by kai on 8/4/16.
  */
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
+import com.jp.band.com.smartkube.R;
+import com.jp.band.com.smartkube.models.Item;
+import com.jp.band.com.smartkube.networks.CustomVolleyRequestQueue;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 

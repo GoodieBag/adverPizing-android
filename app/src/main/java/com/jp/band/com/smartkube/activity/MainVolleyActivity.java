@@ -1,4 +1,4 @@
-package com.jp.band.com.smartkube;
+package com.jp.band.com.smartkube.activity;
 
 /**
  * Created by kai on 6/4/16.
@@ -7,23 +7,26 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.jp.band.com.smartkube.adapters.CardAdapter;
+import com.jp.band.com.smartkube.Credits;
+import com.jp.band.com.smartkube.networks.CustomJSONObjectRequest;
+import com.jp.band.com.smartkube.networks.CustomVolleyRequestQueue;
+import com.jp.band.com.smartkube.models.Item;
+import com.jp.band.com.smartkube.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
