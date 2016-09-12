@@ -50,22 +50,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
         imageLoader = CustomVolleyRequestQueue.getInstance(context).getImageLoader();
         imageLoader.get(item.getImage(), ImageLoader.getImageListener(holder.imageView, R.mipmap.ic_launcher, android.R.drawable.ic_dialog_alert));
-
-
-
-
-
-
-
-        holder.textViewItemHeader.setText(item.getHeader());
+        holder.textViewItemHeader.setText(item.getName());
         holder.textViewItemDescription.setText(item.getDescription());
-        holder.textViewOldPrice.setText(item.getold_price());
-        holder.textViewNewPrice.setText(item.getNew_price());
-
-
-
-
-
+        holder.textViewOldPrice.setText(item.getPlace());
+        holder.textViewNewPrice.setText(item.getLastDate());
     }
 
     @Override

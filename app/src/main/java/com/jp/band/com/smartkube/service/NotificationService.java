@@ -93,7 +93,7 @@ public class NotificationService extends Service implements Response.Listener, R
         String dateTime = null,message = null, company = null;
         try {
 
-            company = job.getString("company");
+            company = job.getString("college");
             companyGlobal = company;
         } catch (JSONException e) {
             e.printStackTrace();

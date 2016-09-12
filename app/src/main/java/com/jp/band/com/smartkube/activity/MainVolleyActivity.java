@@ -57,7 +57,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        initialize();
         //Initializing Views
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -96,9 +96,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
         }
     }
 
-    @Override
-    protected void onStart() {
-        //Showing a progress dialog
+    public void initialize(){
         loading = ProgressDialog.show(this,"Loading Data", "Please wait...",false,false);
         super.onStart();
 
@@ -112,6 +110,11 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
         mQueue.add(jsonRequest);
         waitForSomeTimeAndCloseTheDialog();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     private void waitForSomeTimeAndCloseTheDialog() {
@@ -159,7 +162,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
         String rpiResponse = response.toString();
         try {
             JSONObject jObj = new JSONObject(rpiResponse);
-            JSONArray jArr = jObj.getJSONArray("MegaMart");
+            JSONArray jArr = jObj.getJSONArray("JSSATE");
             for (int i = 0; i < jArr.length(); i++) {
                 JSONObject arJ = jArr.getJSONObject(i);
 //                        String im = arJ.getString("image");
@@ -169,15 +172,12 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
 //                        String newPrice = arJ.getString("newprice");
 
                 Item item = new Item();
-
-                Log.d("Header", arJ.getString("header"));
-
-                item.setHeader(arJ.getString("header"));
+                item.setName(arJ.getString("name"));
                 item.setDescription(arJ.getString("description"));
-                item.setNew_price(arJ.getString("newprice"));
-                item.setOld_price(arJ.getString("oldprice"));
+                item.setLastDate(arJ.getString("lastDate"));
+                item.setPlace(arJ.getString("place"));
                 item.setImage(getString(R.string.pi_ip) +"TEST/"+arJ.getString("url"));
-                Log.d("offers",getString(R.string.pi_ip) +arJ.getString("url"));
+                Log.d("offers",getString(R.string.pi_ip) +arJ.getString("lastDate"));
                 items.add(item);
 
 //                        Log.d("ARRAY ", "" + im + "\n" + head + "\n" + desc);

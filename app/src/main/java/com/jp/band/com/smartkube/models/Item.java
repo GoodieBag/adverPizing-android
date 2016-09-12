@@ -5,14 +5,31 @@ package com.jp.band.com.smartkube.models;
  */
 public class Item {
 
-    String header;
+    String name;
+    String date;
     String description;
     String image;
-    String old_price;
-    String new_price;
+    String place;
+    String lastDate;
 
-    public void setHeader(String header) {
-        this.header = header;
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public String getLastDate() {
+        return lastDate;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 
@@ -28,29 +45,20 @@ public class Item {
         return image;
     }
 
-    public void setNew_price(String new_price) {
-        this.new_price = new_price;
+    public void setLastDate(String lastDate) {
+        this.lastDate = lastDate;
     }
 
-    public void setOld_price(String old_price) {
-        this.old_price = old_price;
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public String getHeader() {
-        return header;
+    public String getName() {
+        return name;
     }
 
-
-    public String getNew_price() {
-        return new_price;
-    }
-
-
-    public String getold_price() {
-        return old_price;
-    }
 }
