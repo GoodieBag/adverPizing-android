@@ -1,4 +1,4 @@
-package com.jp.band.com.smartkube.service;
+package com.goodiebag.adverPizing.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -16,22 +16,22 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.jp.band.com.smartkube.R;
-import com.jp.band.com.smartkube.activity.MainVolleyActivity;
-import com.jp.band.com.smartkube.networks.CustomJSONObjectRequest;
-import com.jp.band.com.smartkube.networks.CustomVolleyRequestQueue;
+import com.goodiebag.adverPizing.R;
+import com.goodiebag.adverPizing.activity.MainVolleyActivity;
+import com.goodiebag.adverPizing.networks.CustomJSONObjectRequest;
+import com.goodiebag.adverPizing.networks.CustomVolleyRequestQueue;
+import com.goodiebag.adverPizing.utils.Constants;
 
-import org.json.JSONException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * Created by kai on 6/4/16.
  */
-public class NotificationService extends Service implements Response.Listener, Response.ErrorListener  {
+public class NotificationService extends Service implements Response.Listener<JSONArray>, Response.ErrorListener  {
     public static final String REQUEST_TAG = "NotificationTag";
     public static final String SERVICE_TAG = "Notificati0nService";
     private RequestQueue mQueue;
-    String companyGlobal  =null;
     MediaPlayer mp;
 
 
@@ -59,7 +59,7 @@ public class NotificationService extends Service implements Response.Listener, R
     private void setUpRequest() {
         mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
                 .getRequestQueue();
-        String url = getString(R.string.pi_ip)+"/TEST/getdata.php";
+        String url = Constants.IP+ Constants.noticeboards;
         final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
@@ -79,33 +79,16 @@ public class NotificationService extends Service implements Response.Listener, R
     }
 
     @Override
-    public void onResponse(Object response) {
-
-
+    public void onResponse(JSONArray response) {
         //Json Parsing
-        JSONObject job = null;
-        try {
 
-            job = new JSONObject(response.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        String dateTime = null,message = null, company = null;
-        try {
-
-            company = job.getString("college");
-            companyGlobal = company;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d("response Json" , dateTime + "LOL" + message + " " + company);
+        Log.d("response Json" , response.toString());
 
         //Show Notification
         popUpNotification();
 
 
     }
-
 
 
     private void popUpNotification() {
@@ -127,7 +110,7 @@ public class NotificationService extends Service implements Response.Listener, R
         Notification.Builder builder = new Notification.Builder(this)
                 .setSmallIcon(R.mipmap.notify)
                 .setAutoCancel(true)
-                .setContentTitle(companyGlobal)
+                .setContentTitle("Dept.of Ise")
                 .setContentText("Alert! Important announcements from college!")
                 .setContentIntent(resultPendingIntent);
 

@@ -1,4 +1,4 @@
-package com.jp.band.com.smartkube;
+package com.goodiebag.smartkube;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

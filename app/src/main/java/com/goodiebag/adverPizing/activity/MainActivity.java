@@ -1,30 +1,23 @@
-package com.jp.band.com.smartkube.activity;
+package com.goodiebag.adverPizing.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 
 
-import com.jp.band.com.smartkube.R;
+import com.goodiebag.adverPizing.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 

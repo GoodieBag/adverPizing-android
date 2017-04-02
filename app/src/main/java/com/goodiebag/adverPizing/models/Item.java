@@ -1,4 +1,4 @@
-package com.jp.band.com.smartkube.models;
+package com.goodiebag.adverPizing.models;
 
 /**
  * Created by kai on 8/4/16.

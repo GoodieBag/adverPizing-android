@@ -1,26 +1,23 @@
-package com.jp.band.com.smartkube.networks;
+package com.goodiebag.adverPizing.networks;
 
 /**
  * Created by kai on 6/4/16.
  */
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomJSONObjectRequest extends JsonObjectRequest {
+public class CustomJSONObjectRequest extends JsonArrayRequest {
 
     public CustomJSONObjectRequest(int method, String url, JSONObject jsonRequest,
-                                   Response.Listener<JSONObject> listener,
+                                   Response.Listener<JSONArray> listener,
                                    Response.ErrorListener errorListener) {
         super(method, url, jsonRequest, listener, errorListener);
     }

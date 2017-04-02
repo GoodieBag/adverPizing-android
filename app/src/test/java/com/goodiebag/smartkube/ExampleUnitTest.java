@@ -1,4 +1,4 @@
-package com.jp.band.com.smartkube;
+package com.goodiebag.smartkube;
 
 import org.junit.Test;
 

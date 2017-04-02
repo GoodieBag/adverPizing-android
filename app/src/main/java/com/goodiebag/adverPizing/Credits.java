@@ -1,8 +1,9 @@
-package com.jp.band.com.smartkube;
+package com.goodiebag.adverPizing;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
 
 /**
  * Created by Pavan on 29-06-2016.

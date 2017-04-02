@@ -1,8 +1,9 @@
-package com.jp.band.com.smartkube.activity;
+package com.goodiebag.adverPizing.activity;
 
 /**
  * Created by kai on 6/4/16.
  */
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,12 +22,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.jp.band.com.smartkube.adapters.CardAdapter;
-import com.jp.band.com.smartkube.Credits;
-import com.jp.band.com.smartkube.networks.CustomJSONObjectRequest;
-import com.jp.band.com.smartkube.networks.CustomVolleyRequestQueue;
-import com.jp.band.com.smartkube.models.Item;
-import com.jp.band.com.smartkube.R;
+import com.goodiebag.adverPizing.R;
+import com.goodiebag.adverPizing.adapters.CardAdapter;
+import com.goodiebag.adverPizing.Credits;
+import com.goodiebag.adverPizing.networks.CustomJSONObjectRequest;
+import com.goodiebag.adverPizing.networks.CustomVolleyRequestQueue;
+import com.goodiebag.adverPizing.models.Item;
+import com.goodiebag.adverPizing.utils.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainVolleyActivity extends AppCompatActivity implements Response.Listener,
+public class MainVolleyActivity extends AppCompatActivity implements Response.Listener<JSONArray>,
         Response.ErrorListener {
     public static final String REQUEST_TAG = "MainVolleyActivity";
 
@@ -61,16 +63,21 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
         //Initializing Views
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        relativeL = (RelativeLayout)findViewById(R.id.relativeL);
+        relativeL = (RelativeLayout) findViewById(R.id.relativeL);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
         //Initializing our superheroes list
         items = new ArrayList<>();
 
+        //Finally initializing our adapter
+        adapter = new CardAdapter(items, this);
+
+        //Adding adapter to recyclerview
+        recyclerView.setAdapter(adapter);
+
         //Calling method to get data
         //getData();
-
 
 
     }
@@ -87,7 +94,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item1:
-                Intent i = new Intent(MainVolleyActivity.this,Credits.class);
+                Intent i = new Intent(MainVolleyActivity.this, Credits.class);
                 startActivity(i);
                 return true;
             default:
@@ -96,13 +103,13 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
         }
     }
 
-    public void initialize(){
-        loading = ProgressDialog.show(this,"Loading Data", "Please wait...",false,false);
+    public void initialize() {
+        loading = ProgressDialog.show(this, "Loading Data", "Please wait...", false, false);
         super.onStart();
 
         mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
                 .getRequestQueue();
-        String url = getString(R.string.pi_ip)+"TEST/getdata.php";
+        String url = Constants.IP + Constants.noticeboards;
         final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
@@ -122,11 +129,12 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
         handler.postDelayed(new Runnable() {
             public void run() {
                 // Actions to do after 10 seconds
-                if(dataOrNot == false){
-                loading.dismiss();
-                relativeL.setBackgroundResource(R.mipmap.notavail);
-                Toast.makeText(getApplicationContext() , "No offers available at this time" , Toast.LENGTH_LONG).show();
-            }}
+                if (dataOrNot == false) {
+                    loading.dismiss();
+                    relativeL.setBackgroundResource(R.mipmap.notavail);
+                    Toast.makeText(getApplicationContext(), "No offers available at this time", Toast.LENGTH_LONG).show();
+                }
+            }
         }, 5000);
     }
 
@@ -140,11 +148,12 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
 
     @Override
     public void onErrorResponse(VolleyError error) {
-      //  mTextView.setText(error.getMessage());
+        //  mTextView.setText(error.getMessage());
+        Log.d("error", error.toString());
     }
 
     @Override
-    public void onResponse(Object response) {
+    public void onResponse(JSONArray response) {
         loading.dismiss();
         dataOrNot = true;
 
@@ -160,36 +169,37 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
 
     private void parseData(Object response) {
         String rpiResponse = response.toString();
+        Log.d("response", rpiResponse);
         try {
-            JSONObject jObj = new JSONObject(rpiResponse);
-            JSONArray jArr = jObj.getJSONArray("JSSATE");
-            for (int i = 0; i < jArr.length(); i++) {
+            JSONArray jArr = new JSONArray(rpiResponse);
+            int i = jArr.length() - 1;
+            int counter = 10;
+            if (i < counter) {
+                counter = i;
+            }
+            while (counter != 0 && !jArr.isNull(i)) {
                 JSONObject arJ = jArr.getJSONObject(i);
-//                        String im = arJ.getString("image");
-//                        String head = arJ.getString("heading");
-//                        String desc = arJ.getString("description");
-//                        String oldPrice = arJ.getString("oldprice");
-//                        String newPrice = arJ.getString("newprice");
-
                 Item item = new Item();
-                item.setName(arJ.getString("name"));
-                item.setDescription(arJ.getString("description"));
-                item.setLastDate(arJ.getString("lastDate"));
-                item.setPlace(arJ.getString("place"));
-                item.setImage(getString(R.string.pi_ip) +"TEST/"+arJ.getString("url"));
-                Log.d("offers",getString(R.string.pi_ip) +arJ.getString("lastDate"));
+                if (arJ.has("date"))
+                    item.setDate("" + arJ.getString("date"));
+                if (arJ.has("title"))
+                    item.setName("" + arJ.getString("title"));
+                if (arJ.has("description"))
+                    item.setDescription("" + arJ.getString("description"));
+                if (arJ.has("deadline"))
+                    item.setLastDate("" + arJ.getString("deadline"));
+                if (arJ.has("teacher"))
+                    item.setPlace("" + arJ.getString("teacher"));
+                Log.d("offers", item.getDescription());
                 items.add(item);
-
-//                        Log.d("ARRAY ", "" + im + "\n" + head + "\n" + desc);
+                counter--;
+                i--;
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        adapter.notifyDataSetChanged();
 
-        //Finally initializing our adapter
-        adapter = new CardAdapter(items, this);
-
-        //Adding adapter to recyclerview
-        recyclerView.setAdapter(adapter);
     }
+
 }

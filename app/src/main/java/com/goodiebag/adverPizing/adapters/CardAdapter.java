@@ -1,4 +1,4 @@
-package com.jp.band.com.smartkube.adapters;
+package com.goodiebag.adverPizing.adapters;
 
 /**
  * Created by kai on 8/4/16.
@@ -12,9 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.jp.band.com.smartkube.R;
-import com.jp.band.com.smartkube.models.Item;
-import com.jp.band.com.smartkube.networks.CustomVolleyRequestQueue;
+import com.goodiebag.adverPizing.R;
+import com.goodiebag.adverPizing.models.Item;
+import com.goodiebag.adverPizing.networks.CustomVolleyRequestQueue;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
 
         imageLoader = CustomVolleyRequestQueue.getInstance(context).getImageLoader();
-        imageLoader.get(item.getImage(), ImageLoader.getImageListener(holder.imageView, R.mipmap.ic_launcher, android.R.drawable.ic_dialog_alert));
+        //imageLoader.get(item.getImage(), ImageLoader.getImageListener(holder.imageView, R.mipmap.ic_launcher, android.R.drawable.ic_dialog_alert));
         holder.textViewItemHeader.setText(item.getName());
         holder.textViewItemDescription.setText(item.getDescription());
         holder.textViewOldPrice.setText(item.getPlace());

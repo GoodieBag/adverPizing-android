@@ -1,4 +1,4 @@
-package com.jp.band.com.smartkube.networks;
+package com.goodiebag.adverPizing.networks;
 
 /**
  * Created by kai on 6/4/16.

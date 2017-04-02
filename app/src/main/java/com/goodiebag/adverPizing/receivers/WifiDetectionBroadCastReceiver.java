@@ -1,4 +1,4 @@
-package com.jp.band.com.smartkube.receivers;
+package com.goodiebag.adverPizing.receivers;
 
 /**
  * Created by kai on 5/4/16.
@@ -8,13 +8,12 @@ package com.jp.band.com.smartkube.receivers;
         import android.content.Context;
         import android.content.Intent;
         import android.net.NetworkInfo;
-        import android.net.wifi.WifiConfiguration;
         import android.net.wifi.WifiInfo;
         import android.net.wifi.WifiManager;
         import android.util.Log;
 
         import com.android.volley.RequestQueue;
-        import com.jp.band.com.smartkube.service.NotificationService;
+        import com.goodiebag.adverPizing.service.NotificationService;
 
 public class WifiDetectionBroadCastReceiver  extends BroadcastReceiver {
     private RequestQueue mQueue;
