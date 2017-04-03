@@ -109,7 +109,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
 
         mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
                 .getRequestQueue();
-        String url = Constants.IP + Constants.noticeboards;
+        String url = Constants.IP + Constants.noticeboards + Constants.firstTenNotices;
         final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
@@ -172,12 +172,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
         Log.d("response", rpiResponse);
         try {
             JSONArray jArr = new JSONArray(rpiResponse);
-            int i = jArr.length() - 1;
-            int counter = 10;
-            if (i < counter) {
-                counter = i;
-            }
-            while (counter != 0 && !jArr.isNull(i)) {
+            for(int i = 0; i < jArr.length(); i++){
                 JSONObject arJ = jArr.getJSONObject(i);
                 Item item = new Item();
                 if (arJ.has("date"))
@@ -192,14 +187,10 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
                     item.setPlace("" + arJ.getString("teacher"));
                 Log.d("offers", item.getDescription());
                 items.add(item);
-                counter--;
-                i--;
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         adapter.notifyDataSetChanged();
-
     }
-
 }

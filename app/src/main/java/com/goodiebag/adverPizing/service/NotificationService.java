@@ -59,7 +59,7 @@ public class NotificationService extends Service implements Response.Listener<JS
     private void setUpRequest() {
         mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
                 .getRequestQueue();
-        String url = Constants.IP+ Constants.noticeboards;
+        String url = Constants.IP+ Constants.noticeboards + Constants.firstTenNotices;
         final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
@@ -81,15 +81,10 @@ public class NotificationService extends Service implements Response.Listener<JS
     @Override
     public void onResponse(JSONArray response) {
         //Json Parsing
-
         Log.d("response Json" , response.toString());
-
         //Show Notification
         popUpNotification();
-
-
     }
-
 
     private void popUpNotification() {
         mp.start();
@@ -108,7 +103,7 @@ public class NotificationService extends Service implements Response.Listener<JS
 
         NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification.Builder builder = new Notification.Builder(this)
-                .setSmallIcon(R.mipmap.notify)
+                .setSmallIcon(getNotificationIcon())
                 .setAutoCancel(true)
                 .setContentTitle("Dept.of Ise")
                 .setContentText("Alert! Important announcements from college!")
@@ -125,5 +120,10 @@ public class NotificationService extends Service implements Response.Listener<JS
     @Override
     public void onErrorResponse(VolleyError error) {
 
+    }
+
+    private int getNotificationIcon() {
+        boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
+        return useWhiteIcon ? R.mipmap.notification_bell : R.mipmap.school_bell;
     }
 }
