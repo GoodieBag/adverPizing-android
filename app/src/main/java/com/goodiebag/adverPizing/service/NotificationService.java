@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -59,7 +60,10 @@ public class NotificationService extends Service implements Response.Listener<JS
     private void setUpRequest() {
         mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
                 .getRequestQueue();
-        String url = Constants.IP+ Constants.noticeboards + Constants.firstTenNotices;
+        SharedPreferences prefs = getSharedPreferences("PREF", MODE_PRIVATE);
+        String ip = prefs.getString("ip", null);
+        Log.d("Notification", "ip is read: " + ip);
+        String url = /*Constants.IP*/"http://"+ ip +":3000/"+ Constants.noticeboards + Constants.firstTenNotices;
         final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);

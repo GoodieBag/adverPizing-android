@@ -13,7 +13,9 @@ package com.goodiebag.adverPizing.receivers;
         import android.util.Log;
 
         import com.android.volley.RequestQueue;
+        import com.goodiebag.adverPizing.networks.UdpAsyncTask;
         import com.goodiebag.adverPizing.service.NotificationService;
+        import com.goodiebag.adverPizing.utils.MethodUtils;
 
 public class WifiDetectionBroadCastReceiver  extends BroadcastReceiver {
     private RequestQueue mQueue;
@@ -27,6 +29,7 @@ public class WifiDetectionBroadCastReceiver  extends BroadcastReceiver {
             String ssidJss = "JSSDigiBoard";
             Intent i = new Intent(context,NotificationService.class);
             context.startService(i);
+            new UdpAsyncTask().execute("");
             // e.g. To check the Network Name or other info:
             WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();

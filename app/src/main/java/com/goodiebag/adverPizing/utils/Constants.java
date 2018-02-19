@@ -5,7 +5,7 @@ package com.goodiebag.adverPizing.utils;
  */
 
 public class Constants {
-    public static String IP = "http://192.168.1.112:3000/";
+    public static String IP = "http://192.168.1.254:3000/";
 
     public static final String noticeboards = "noticeboards/";
     public static final String firstTenNotices = "firstTen";

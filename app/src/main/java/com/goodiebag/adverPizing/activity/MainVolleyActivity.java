@@ -6,6 +6,7 @@ package com.goodiebag.adverPizing.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,7 @@ import com.goodiebag.adverPizing.Credits;
 import com.goodiebag.adverPizing.networks.CustomJSONObjectRequest;
 import com.goodiebag.adverPizing.networks.CustomVolleyRequestQueue;
 import com.goodiebag.adverPizing.models.Item;
+import com.goodiebag.adverPizing.networks.UdpAsyncTask;
 import com.goodiebag.adverPizing.utils.Constants;
 
 import org.json.JSONArray;
@@ -78,7 +80,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
 
         //Calling method to get data
         //getData();
-
+        new UdpAsyncTask().execute("");
 
     }
 
@@ -109,7 +111,10 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
 
         mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
                 .getRequestQueue();
-        String url = Constants.IP + Constants.noticeboards + Constants.firstTenNotices;
+        SharedPreferences prefs = getSharedPreferences("PREF", MODE_PRIVATE);
+        String ip = prefs.getString("ip", null);
+        Log.d("Activity", "ip is read: " + ip);
+        String url = /*Constants.IP*/ "http://"+ ip +":3000/"+ Constants.noticeboards + Constants.firstTenNotices;
         final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);

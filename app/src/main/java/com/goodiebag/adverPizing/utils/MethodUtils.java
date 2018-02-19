@@ -15,11 +15,12 @@ import java.net.UnknownHostException;
 
 public class MethodUtils {
 
-    String BROADCAST_IP = "255.255.255.255";
-    int UDP_SEND_PORT = 9000;
-    int UDP_RECEIVE_PORT = 12345;
+    static String BROADCAST_IP = "255.255.255.255";
+    static int UDP_SEND_PORT = 9000;
+    static int UDP_RECEIVE_PORT = 12345;
 
-    private int udpSendAndReceive(String ipFromPi)  {
+    public static String udpSendAndReceive()  {
+        String ipFromPi="";
         int result = 0;
         String Msg = "Hello Pi! Whats your IP?";
         DatagramSocket tx = null, rx = null;
@@ -63,7 +64,7 @@ public class MethodUtils {
             }
         }
 
-        return result;
+        return ipFromPi;
     }
 
 }
