@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.goodiebag.adverPizing.R;
 import com.goodiebag.adverPizing.activity.MainVolleyActivity;
+import com.goodiebag.adverPizing.networks.ApiHelper;
 import com.goodiebag.adverPizing.networks.CustomJSONObjectRequest;
 import com.goodiebag.adverPizing.networks.CustomVolleyRequestQueue;
 import com.goodiebag.adverPizing.utils.Constants;
@@ -29,7 +30,7 @@ import org.json.JSONObject;
 /**
  * Created by kai on 6/4/16.
  */
-public class NotificationService extends Service implements Response.Listener<JSONArray>, Response.ErrorListener  {
+public class NotificationService extends Service implements Response.Listener<JSONArray>, Response.ErrorListener {
     public static final String REQUEST_TAG = "NotificationTag";
     public static final String SERVICE_TAG = "Notificati0nService";
     private RequestQueue mQueue;
@@ -40,7 +41,7 @@ public class NotificationService extends Service implements Response.Listener<JS
     public void onDestroy() {
         super.onDestroy();
         Log.d(SERVICE_TAG, "Destroyed");
-        Toast.makeText(getApplicationContext() , "Destroyed" , Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "Destroyed", Toast.LENGTH_LONG).show();
         if (mQueue != null) {
             mQueue.cancelAll(REQUEST_TAG);
         }
@@ -50,10 +51,10 @@ public class NotificationService extends Service implements Response.Listener<JS
     @Override
     public void onCreate() {
         super.onCreate();
-       Log.d(SERVICE_TAG,"Kappa");
-       mp = MediaPlayer.create(this, R.raw.tweeters);
+        Log.d(SERVICE_TAG, "Kappa");
+        mp = MediaPlayer.create(this, R.raw.tweeters);
         setUpRequest();
-        Toast.makeText(getApplicationContext() , "creaated" , Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "creaated", Toast.LENGTH_LONG).show();
 
     }
 
@@ -63,7 +64,7 @@ public class NotificationService extends Service implements Response.Listener<JS
         SharedPreferences prefs = getSharedPreferences("PREF", MODE_PRIVATE);
         String ip = prefs.getString("ip", null);
         Log.d("Notification", "ip is read: " + ip);
-        String url = /*Constants.IP*/"http://"+ ip +":3000/"+ Constants.noticeboards + Constants.firstTenNotices;
+        String url = ApiHelper.buildURL(ip, Constants.noticeboards, Constants.firstTenNotices);
         final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
@@ -85,7 +86,7 @@ public class NotificationService extends Service implements Response.Listener<JS
     @Override
     public void onResponse(JSONArray response) {
         //Json Parsing
-        Log.d("response Json" , response.toString());
+        Log.d("response Json", response.toString());
         //Show Notification
         popUpNotification();
     }

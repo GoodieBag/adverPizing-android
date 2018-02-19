@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.goodiebag.adverPizing.R;
 import com.goodiebag.adverPizing.adapters.CardAdapter;
 import com.goodiebag.adverPizing.Credits;
+import com.goodiebag.adverPizing.networks.ApiHelper;
 import com.goodiebag.adverPizing.networks.CustomJSONObjectRequest;
 import com.goodiebag.adverPizing.networks.CustomVolleyRequestQueue;
 import com.goodiebag.adverPizing.models.Item;
@@ -43,7 +44,7 @@ import java.util.List;
 public class MainVolleyActivity extends AppCompatActivity implements Response.Listener<JSONArray>,
         Response.ErrorListener {
     public static final String REQUEST_TAG = "MainVolleyActivity";
-
+    private static final String TAG = MainVolleyActivity.class.getSimpleName();
     private Button mButton;
     private RequestQueue mQueue;
     ProgressDialog loading = null;
@@ -61,7 +62,30 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initialize();
+
+        loading = ProgressDialog.show(this, "Loading Data", "Please wait...", false, false);
+        super.onStart();
+        //Throw an ip search async
+        UdpAsyncTask udpAsyncTask = new UdpAsyncTask();
+        udpAsyncTask.setListener(new UdpAsyncTask.UdpAsyncTaskInteraction() {
+            @Override
+            public void onIpObtained(String ip) {
+                Log.d(TAG, "Ip is : " + ip);
+                initialize();
+
+                waitForSomeTimeAndCloseTheDialog();
+            }
+
+            @Override
+            public void onIpNull() {
+                Log.d(TAG, "Ip is null");
+
+                waitForSomeTimeAndCloseTheDialog();
+            }
+        });
+        udpAsyncTask.execute("");
+
+
         //Initializing Views
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -80,8 +104,6 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
 
         //Calling method to get data
         //getData();
-        new UdpAsyncTask().execute("");
-
     }
 
     @Override
@@ -106,21 +128,19 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
     }
 
     public void initialize() {
-        loading = ProgressDialog.show(this, "Loading Data", "Please wait...", false, false);
-        super.onStart();
+
 
         mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
                 .getRequestQueue();
         SharedPreferences prefs = getSharedPreferences("PREF", MODE_PRIVATE);
         String ip = prefs.getString("ip", null);
         Log.d("Activity", "ip is read: " + ip);
-        String url = /*Constants.IP*/ "http://"+ ip +":3000/"+ Constants.noticeboards + Constants.firstTenNotices;
+        String url = ApiHelper.buildURL(ip, Constants.noticeboards, Constants.firstTenNotices);
         final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);
-        waitForSomeTimeAndCloseTheDialog();
 
     }
 
@@ -134,7 +154,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
         handler.postDelayed(new Runnable() {
             public void run() {
                 // Actions to do after 10 seconds
-                if (dataOrNot == false) {
+                if (!dataOrNot) {
                     loading.dismiss();
                     relativeL.setBackgroundResource(R.mipmap.notavail);
                     Toast.makeText(getApplicationContext(), "No offers available at this time", Toast.LENGTH_LONG).show();
@@ -161,14 +181,6 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
     public void onResponse(JSONArray response) {
         loading.dismiss();
         dataOrNot = true;
-
-       /* mTextView.setText("Response is: " + response);
-        try {
-            mTextView.setText(mTextView.getText() + "\n\n" + ((JSONObject) response).getString
-                    ("company"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
         parseData(response);
     }
 
@@ -177,7 +189,7 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
         Log.d("response", rpiResponse);
         try {
             JSONArray jArr = new JSONArray(rpiResponse);
-            for(int i = 0; i < jArr.length(); i++){
+            for (int i = 0; i < jArr.length(); i++) {
                 JSONObject arJ = jArr.getJSONObject(i);
                 Item item = new Item();
                 if (arJ.has("date"))
