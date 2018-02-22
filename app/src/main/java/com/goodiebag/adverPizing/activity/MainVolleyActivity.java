@@ -72,14 +72,12 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
             public void onIpObtained(String ip) {
                 Log.d(TAG, "Ip is : " + ip);
                 initialize();
-
                 waitForSomeTimeAndCloseTheDialog();
             }
 
             @Override
             public void onIpNull() {
                 Log.d(TAG, "Ip is null");
-
                 waitForSomeTimeAndCloseTheDialog();
             }
         });
@@ -128,8 +126,6 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
     }
 
     public void initialize() {
-
-
         mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
                 .getRequestQueue();
         SharedPreferences prefs = getSharedPreferences("PREF", MODE_PRIVATE);
@@ -141,7 +137,6 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
                 new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);
-
     }
 
     @Override
