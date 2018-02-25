@@ -17,6 +17,7 @@ import com.goodiebag.adverPizing.activity.MainVolleyActivity;
 import com.goodiebag.adverPizing.networks.rest.AdverPizingRetroServer;
 import com.goodiebag.adverPizing.networks.rest.AdverPizingService;
 import com.goodiebag.adverPizing.networks.rest.models.NoticeBoardRespnose;
+import com.goodiebag.adverPizing.utils.SharedPreferenceHelper;
 
 import java.util.List;
 
@@ -62,9 +63,11 @@ public class NotificationService extends Service {
             @Override
             public void onResponse(Call<List<NoticeBoardRespnose>> call, retrofit2.Response<List<NoticeBoardRespnose>> response) {
                 Log.d("onResponse : ", response.toString());
-                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                // Vibrate for 500 milliseconds
-                v.vibrate(500);
+                if(SharedPreferenceHelper.getBooleanSharedPreference(SharedPreferenceHelper.VIBRATIONS, true)) {
+                    Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                    // Vibrate for 500 milliseconds
+                    v.vibrate(500);
+                }
                 popUpNotification();
             }
 
@@ -87,7 +90,9 @@ public class NotificationService extends Service {
     }
 
     private void popUpNotification() {
-        mp.start();
+        if(SharedPreferenceHelper.getBooleanSharedPreference(SharedPreferenceHelper.NOTIFICATION_SOUND, true)) {
+            mp.start();
+        }
         Notification mNotification;
         Intent resultIntent = new Intent(this, MainVolleyActivity.class);
 

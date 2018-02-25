@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.goodiebag.adverPizing">
+
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
-        android:name="com.goodiebag.adverPizing.AppController"
+        android:name=".AppController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.goodiebag.adverPizing.activity.MainVolleyActivity">
+        <activity android:name=".activity.MainVolleyActivity">
             <intent-filter>
-
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.goodiebag.adverPizing.Credits">
+        <activity android:name=".Credits">
             <intent-filter>
-
                 <action android:name="android.intent.action.Credits" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-
-        <receiver android:name="com.goodiebag.adverPizing.receivers.WifiDetectionBroadCastReceiver" >
+        <receiver android:name=".receivers.WifiDetectionBroadCastReceiver">
             <intent-filter android:priority="100">
-               <!-- <action android:name="android.net.wifi.STATE_CHANGE" />-->
 
+                <!-- <action android:name="android.net.wifi.STATE_CHANGE" /> -->
 
-               <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-              <!-- <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />-->
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <!-- <action android:name="android.net.wifi.WIFI_STATE_CHANGED" /> -->
             </intent-filter>
         </receiver>
-    <service
-        android:name = "com.goodiebag.adverPizing.service.NotificationService"
-        android:label ="My Service"></service>
 
+        <service
+            android:name=".service.NotificationService"
+            android:label="My Service" />
+
+        <activity android:name=".activity.SettingsActivity"></activity>
     </application>
 
 </manifest>

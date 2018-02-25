@@ -30,6 +30,7 @@ import com.goodiebag.adverPizing.networks.rest.models.NoticeBoardRespnose;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,10 +46,7 @@ public class MainVolleyActivity extends AppCompatActivity{
     private List<Item> items;
     private Boolean dataOrNot = false;
 
-    //Creating Views
-    private RecyclerView recyclerView;
     private RelativeLayout relativeL;
-    private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
 
     @Override
@@ -78,10 +76,10 @@ public class MainVolleyActivity extends AppCompatActivity{
 
 
         //Initializing Views
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        relativeL = (RelativeLayout) findViewById(R.id.relativeL);
-        layoutManager = new LinearLayoutManager(this);
+        relativeL = findViewById(R.id.relativeL);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
         //Initializing our superheroes list
@@ -92,9 +90,6 @@ public class MainVolleyActivity extends AppCompatActivity{
 
         //Adding adapter to recyclerview
         recyclerView.setAdapter(adapter);
-
-        //Calling method to get data
-        //getData();
     }
 
     @Override
@@ -108,7 +103,11 @@ public class MainVolleyActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.item1:
+            case R.id.settings:
+                Intent settingsIntent = new Intent(MainVolleyActivity.this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+            case R.id.user_guide:
                 Intent i = new Intent(MainVolleyActivity.this, Credits.class);
                 startActivity(i);
                 return true;
@@ -142,11 +141,6 @@ public class MainVolleyActivity extends AppCompatActivity{
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
     private void waitForSomeTimeAndCloseTheDialog() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -159,11 +153,6 @@ public class MainVolleyActivity extends AppCompatActivity{
                 }
             }
         }, 5000);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     private void populateData(retrofit2.Response<List<NoticeBoardRespnose>> responses) {
