@@ -5,9 +5,12 @@ package com.goodiebag.adverPizing.utils;
  */
 
 public class Constants {
-    public static String IP = "http://192.168.1.254:3000/";
 
-    public static final String noticeboards = "noticeboards/";
-    public static final String firstTenNotices = "firstTen";
+    public static final String DISCOVER = "com.goodiebag.DISCOVER";
+    public static final String RECEIVE = "com.goodiebag.RECEIVE";
+    public static final String CONNECTED = "com.goodiebag.CONNECTED";
+    public static final String DISCONNECTED = "com.goodiebag.DISCONNECTED";
+    public static final String ADDRESSES = "addresses";
+
 
 }
