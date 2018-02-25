@@ -11,29 +11,24 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.goodiebag.adverPizing.R;
 import com.goodiebag.adverPizing.activity.MainVolleyActivity;
-import com.goodiebag.adverPizing.networks.ApiHelper;
-import com.goodiebag.adverPizing.networks.CustomJSONObjectRequest;
-import com.goodiebag.adverPizing.networks.CustomVolleyRequestQueue;
-import com.goodiebag.adverPizing.utils.Constants;
+import com.goodiebag.adverPizing.networks.rest.AdverPizingRetroServer;
+import com.goodiebag.adverPizing.networks.rest.AdverPizingService;
+import com.goodiebag.adverPizing.networks.rest.models.NoticeBoardRespnose;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
 
 /**
  * Created by kai on 6/4/16.
  */
-public class NotificationService extends Service implements Response.Listener<JSONArray>, Response.ErrorListener {
+public class NotificationService extends Service {
     public static final String REQUEST_TAG = "NotificationTag";
     public static final String SERVICE_TAG = "Notificati0nService";
-    private RequestQueue mQueue;
     MediaPlayer mp;
 
 
@@ -42,9 +37,6 @@ public class NotificationService extends Service implements Response.Listener<JS
         super.onDestroy();
         Log.d(SERVICE_TAG, "Destroyed");
         //Toast.makeText(getApplicationContext(), "Destroyed", Toast.LENGTH_LONG).show();
-        if (mQueue != null) {
-            mQueue.cancelAll(REQUEST_TAG);
-        }
     }
 
 
@@ -59,17 +51,24 @@ public class NotificationService extends Service implements Response.Listener<JS
     }
 
     private void setUpRequest() {
-        mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
-                .getRequestQueue();
         SharedPreferences prefs = getSharedPreferences("PREF", MODE_PRIVATE);
         String ip = prefs.getString("ip", null);
-        Log.d("Notification", "ip is read: " + ip);
-        String url = ApiHelper.buildURL(ip, Constants.noticeboards, Constants.firstTenNotices);
-        final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
-                .GET, url,
-                new JSONObject(), this, this);
-        jsonRequest.setTag(REQUEST_TAG);
-        mQueue.add(jsonRequest);
+        Retrofit retroServer = AdverPizingRetroServer.getRetroServer(ip);
+        AdverPizingService service = retroServer.create(AdverPizingService.class);
+
+        Call<List<NoticeBoardRespnose>> responses = service.listNotices();
+        responses.enqueue(new Callback<List<NoticeBoardRespnose>>() {
+            @Override
+            public void onResponse(Call<List<NoticeBoardRespnose>> call, retrofit2.Response<List<NoticeBoardRespnose>> response) {
+                Log.d("onResponse : ", response.toString());
+                popUpNotification();
+            }
+
+            @Override
+            public void onFailure(Call<List<NoticeBoardRespnose>> call, Throwable t) {
+                Log.d("onFailure : ", "Failure");
+            }
+        });
     }
 
     @Override
@@ -81,14 +80,6 @@ public class NotificationService extends Service implements Response.Listener<JS
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-
-    @Override
-    public void onResponse(JSONArray response) {
-        //Json Parsing
-        Log.d("response Json", response.toString());
-        //Show Notification
-        popUpNotification();
     }
 
     private void popUpNotification() {
@@ -119,11 +110,6 @@ public class NotificationService extends Service implements Response.Listener<JS
 
         //Show the notification
         mNotificationManager.notify(1, mNotification);
-
-    }
-
-    @Override
-    public void onErrorResponse(VolleyError error) {
 
     }
 

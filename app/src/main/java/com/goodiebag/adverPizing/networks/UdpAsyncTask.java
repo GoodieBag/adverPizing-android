@@ -71,6 +71,8 @@ public class UdpAsyncTask extends AsyncTask<String, Void, String> {
             DatagramPacket packet;
             packet = new DatagramPacket(messageFromServer, messageFromServer.length);
             rx.receive(packet);
+            // Pi's ip is below
+            packet.getAddress().getHostAddress();
             ipFromPi = new String(messageFromServer, 0, packet.getLength());
             Log.d("Received text", ipFromPi);
             //piIpAddress.setText(ipFromPi);

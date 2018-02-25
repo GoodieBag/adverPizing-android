@@ -11,17 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.goodiebag.adverPizing.R;
 import com.goodiebag.adverPizing.models.Item;
-import com.goodiebag.adverPizing.networks.CustomVolleyRequestQueue;
 
 import java.util.List;
 
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
-    private ImageLoader imageLoader;
     private Context context;
 
     //List of superHeroes
@@ -46,9 +43,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         Item item =  items.get(position);
-
-
-        imageLoader = CustomVolleyRequestQueue.getInstance(context).getImageLoader();
         //imageLoader.get(item.getImage(), ImageLoader.getImageListener(holder.imageView, R.mipmap.ic_launcher, android.R.drawable.ic_dialog_alert));
         holder.textViewItemHeader.setText(item.getName());
         holder.textViewItemDescription.setText(item.getDescription());

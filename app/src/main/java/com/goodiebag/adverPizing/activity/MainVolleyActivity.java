@@ -19,34 +19,27 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.goodiebag.adverPizing.R;
 import com.goodiebag.adverPizing.adapters.CardAdapter;
 import com.goodiebag.adverPizing.Credits;
-import com.goodiebag.adverPizing.networks.ApiHelper;
-import com.goodiebag.adverPizing.networks.CustomJSONObjectRequest;
-import com.goodiebag.adverPizing.networks.CustomVolleyRequestQueue;
 import com.goodiebag.adverPizing.models.Item;
 import com.goodiebag.adverPizing.networks.UdpAsyncTask;
-import com.goodiebag.adverPizing.utils.Constants;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.goodiebag.adverPizing.networks.rest.AdverPizingRetroServer;
+import com.goodiebag.adverPizing.networks.rest.AdverPizingService;
+import com.goodiebag.adverPizing.networks.rest.models.NoticeBoardRespnose;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
 
-public class MainVolleyActivity extends AppCompatActivity implements Response.Listener<JSONArray>,
-        Response.ErrorListener {
+
+public class MainVolleyActivity extends AppCompatActivity{
     public static final String REQUEST_TAG = "MainVolleyActivity";
     private static final String TAG = MainVolleyActivity.class.getSimpleName();
     private Button mButton;
-    private RequestQueue mQueue;
     ProgressDialog loading = null;
 
     private List<Item> items;
@@ -126,17 +119,27 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
     }
 
     public void initialize() {
-        mQueue = CustomVolleyRequestQueue.getInstance(this.getApplicationContext())
-                .getRequestQueue();
         SharedPreferences prefs = getSharedPreferences("PREF", MODE_PRIVATE);
         String ip = prefs.getString("ip", null);
-        Log.d("Activity", "ip is read: " + ip);
-        String url = ApiHelper.buildURL(ip, Constants.noticeboards, Constants.firstTenNotices);
-        final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
-                .GET, url,
-                new JSONObject(), this, this);
-        jsonRequest.setTag(REQUEST_TAG);
-        mQueue.add(jsonRequest);
+        Retrofit retroServer = AdverPizingRetroServer.getRetroServer(ip);
+        AdverPizingService service = retroServer.create(AdverPizingService.class);
+
+        Call<List<NoticeBoardRespnose>> responses = service.listNotices();
+        responses.enqueue(new Callback<List<NoticeBoardRespnose>>() {
+            @Override
+            public void onResponse(Call<List<NoticeBoardRespnose>> call, retrofit2.Response<List<NoticeBoardRespnose>> response) {
+                Log.d("onResponse : ", response.toString());
+                loading.dismiss();
+                dataOrNot = true;
+                populateData(response);
+            }
+
+            @Override
+            public void onFailure(Call<List<NoticeBoardRespnose>> call, Throwable t) {
+                Log.d("onFailure : ", "Failure");
+            }
+        });
+
     }
 
     @Override
@@ -161,46 +164,24 @@ public class MainVolleyActivity extends AppCompatActivity implements Response.Li
     @Override
     protected void onStop() {
         super.onStop();
-        if (mQueue != null) {
-            mQueue.cancelAll(REQUEST_TAG);
-        }
     }
 
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        //  mTextView.setText(error.getMessage());
-        Log.d("error", error.toString());
-    }
-
-    @Override
-    public void onResponse(JSONArray response) {
-        loading.dismiss();
-        dataOrNot = true;
-        parseData(response);
-    }
-
-    private void parseData(Object response) {
-        String rpiResponse = response.toString();
-        Log.d("response", rpiResponse);
+    private void populateData(retrofit2.Response<List<NoticeBoardRespnose>> responses) {
         try {
-            JSONArray jArr = new JSONArray(rpiResponse);
-            for (int i = 0; i < jArr.length(); i++) {
-                JSONObject arJ = jArr.getJSONObject(i);
+            String rpiResponse = responses.body().toString();
+            Log.d("response", rpiResponse);
+            for (int i = 0; i < responses.body().size(); i++) {
+                NoticeBoardRespnose response = responses.body().get(i);
                 Item item = new Item();
-                if (arJ.has("date"))
-                    item.setDate("" + arJ.getString("date"));
-                if (arJ.has("title"))
-                    item.setName("" + arJ.getString("title"));
-                if (arJ.has("description"))
-                    item.setDescription("" + arJ.getString("description"));
-                if (arJ.has("deadline"))
-                    item.setLastDate("" + arJ.getString("deadline"));
-                if (arJ.has("teacher"))
-                    item.setPlace("" + arJ.getString("teacher"));
+                    item.setDate(response.getDate());
+                    item.setName(response.getTitle());
+                    item.setDescription(response.getDescription());
+                    item.setLastDate(response.getDeadline());
+                    item.setPlace(response.getTeacher());
                 Log.d("offers", item.getDescription());
                 items.add(item);
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         adapter.notifyDataSetChanged();

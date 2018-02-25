@@ -11,14 +11,11 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
-import com.android.volley.RequestQueue;
 import com.goodiebag.adverPizing.networks.UdpAsyncTask;
 import com.goodiebag.adverPizing.service.NotificationService;
 
 public class WifiDetectionBroadCastReceiver extends BroadcastReceiver {
     private static final String TAG = WifiDetectionBroadCastReceiver.class.getSimpleName();
-    private RequestQueue mQueue;
-
     @Override
     public void onReceive(final Context context, Intent intent) {
         NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
